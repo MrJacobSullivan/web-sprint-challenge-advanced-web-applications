@@ -1,17 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 
 import Article from './Article'
 import EditForm from './EditForm'
+
+import articleService from '../services/articleServices'
 
 const View = (props) => {
   const [articles, setArticles] = useState([])
   const [editing, setEditing] = useState(false)
   const [editId, setEditId] = useState()
 
-  const handleDelete = (id) => {}
+  const getAll = () => articleService.getAll().then((articles) => setArticles(articles))
 
-  const handleEdit = (article) => {}
+  const handleDelete = (id) => articleService.delete(id).then(() => getAll())
+
+  const handleEdit = (article) => {
+    articleService.update(article).then(() => getAll())
+    setEditing(false)
+  }
 
   const handleEditSelect = (id) => {
     setEditing(true)
@@ -21,6 +28,10 @@ const View = (props) => {
   const handleEditCancel = () => {
     setEditing(false)
   }
+
+  useEffect(() => {
+    getAll()
+  }, [])
 
   return (
     <ComponentContainer>

@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
+
+import articleService from '../services/articleServices'
 
 const initialArticle = {
   id: '',
@@ -30,6 +32,10 @@ const EditForm = (props) => {
     handleEditCancel()
   }
 
+  useEffect(() => {
+    articleService.getById(editId).then((article) => setArticle(article))
+  }, [])
+
   return (
     <FormContainer onSubmit={handleSubmit}>
       <h3>Edit Article</h3>
@@ -49,7 +55,7 @@ const EditForm = (props) => {
         <label>Body</label>
         <input value={article.body} id="body" name="body" onChange={handleChange} />
       </div>
-      <Button id="editButton">Edit Article</Button>
+      <Button id="editButton">Submit Edit</Button>
       <Button onClick={handleCancel}>Cancel</Button>
     </FormContainer>
   )
