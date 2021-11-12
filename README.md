@@ -50,14 +50,14 @@ In this project, you will demonstrate your mastery of these skills by creating *
 ### Route Authentication
 
 - [x] Build a `PrivateRoute` component within the components folder.
-- [ ] Use the `PrivateRoute` component to build a route rendering `View.js` to the path `/view`.
-- [ ] Use the `PrivateRoute` component to build a route rendering `Logout.js` to the path `/logout`.
+- [x] Use the `PrivateRoute` component to build a route rendering `View.js` to the path `/view`.
+- [x] Use the `PrivateRoute` component to build a route rendering `Logout.js` to the path `/logout`.
 
 ### Request Authentication
 
 > _Complete the requests needed to execute all CRUD functions._
 
-- [ ] Build a `axiosWithAuth` module within the utils folder to create an instance of axios with the authentication header.
+- [x] Build a `axiosWithAuth` module within the utils folder to create an instance of axios with the authentication header.
 - [ ] Complete the `services/articleService.js` module. It should use make an authenticated call to retrieve and return all articles from the server.
 
 - [ ] In `View.js`, when the component mounts, use `articleService` to make an http request and add all articles to state.
@@ -72,7 +72,7 @@ In this project, you will demonstrate your mastery of these skills by creating *
 
 > _Add in the http requests needed to logout of the application._
 
-- [ ] In `Logout.js`, execute a http request to logout on mount. When the request is complete, the user's security token should be removed and the browser should redirect to the login page.
+- [x] In `Logout.js`, execute a http request to logout on mount. When the request is complete, the user's security token should be removed and the browser should redirect to the login page.
 
 ### Advanced Testing
 

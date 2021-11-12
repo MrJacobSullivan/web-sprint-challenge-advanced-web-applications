@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 
-import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 
 import { useSelector, useDispatch } from 'react-redux'
@@ -11,12 +10,10 @@ const initialValues = { username: '', password: '' }
 
 const Login = () => {
   const dispatch = useDispatch()
-  const { isFetching, isSuccess, isError, error } = useSelector(authSelector)
+  const { isSuccess, isError, error } = useSelector(authSelector)
 
   const [values, setValue] = useState(initialValues)
   const [errorMessage, setErrorMessage] = useState('')
-
-  // const { login } = useAppContext()
 
   const { push } = useHistory()
 

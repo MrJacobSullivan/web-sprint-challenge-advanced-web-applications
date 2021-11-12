@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
+import axiosWithAuth from '../utils/axiosWithAuth'
 
 export const login = createAsyncThunk('auth/login', async ({ username, password }, thunkAPI) => {
   try {
@@ -10,6 +11,18 @@ export const login = createAsyncThunk('auth/login', async ({ username, password 
     localStorage.setItem('role', data.role)
 
     return data
+  } catch ({ message }) {
+    return thunkAPI.rejectWithValue(message)
+  }
+})
+
+export const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
+  try {
+    await axiosWithAuth().post('/logout')
+
+    localStorage.removeItem('token')
+    localStorage.removeItem('username')
+    localStorage.removeItem('role')
   } catch ({ message }) {
     return thunkAPI.rejectWithValue(message)
   }
@@ -62,6 +75,30 @@ export const authSlice = createSlice({
       }
     },
     [login.pending]: (state) => {
+      return { ...state, isFetching: true }
+    },
+    [logout.fulfilled]: (state) => {
+      return {
+        ...state,
+        isAuthenticated: false,
+        usename: '',
+        role: '',
+        isFetching: false,
+        isSuccess: false,
+        isError: false,
+        error: '',
+      }
+    },
+    [logout.rejected]: (state, { payload }) => {
+      return {
+        ...state,
+        isFetching: false,
+        isSuccess: false,
+        isError: true,
+        error: payload,
+      }
+    },
+    [logout.pending]: (state) => {
       return { ...state, isFetching: true }
     },
   },
