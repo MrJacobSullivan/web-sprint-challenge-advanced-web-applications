@@ -4,9 +4,7 @@ import styled from 'styled-components'
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 
-import { useRole } from '../hooks/useRole'
-import { useToken } from '../hooks/useToken'
-import { useUsername } from '../hooks/useUsername'
+import { useAppContext } from '../hooks/useAuthContext'
 
 const initialValues = { username: '', password: '' }
 
@@ -14,9 +12,7 @@ const Login = () => {
   const [values, setValue] = useState(initialValues)
   const [error, setError] = useState('')
 
-  const { setRole } = useRole()
-  const { setToken } = useToken()
-  const { setUsername } = useUsername()
+  // const { login } = useAppContext()
 
   const { push } = useHistory()
 
@@ -31,13 +27,9 @@ const Login = () => {
 
     try {
       const { data } = await axios.post('http://localhost:5000/api/login', values)
-      const { role, token, username } = data
+      // login(data)
 
-      setRole(role)
-      setToken(token)
-      setUsername(username)
-
-      push('/')
+      push('/view')
     } catch ({ message }) {
       setError(message)
     }
@@ -74,7 +66,7 @@ const Login = () => {
             />
           </Label>
 
-          <p>{error}</p>
+          <Error id="error">{error}</Error>
 
           <Button id="submit">Submit</Button>
         </FormGroup>
@@ -84,14 +76,6 @@ const Login = () => {
 }
 
 export default Login
-
-//Task List
-//1. Build login form DOM from scratch, making use of styled components if needed. Make sure the username input has id="username" and the password input as id="password".
-//2. Add in a p tag with the id="error" under the login form for use in error display.
-//3. Add in necessary local state to support login form and error display.
-//4. When login form is submitted, make an http call to the login route. Save the auth token on a successful response and redirect to view page.
-//5. If the response is not successful, display an error statement. **a server provided error message can be found in ```err.response.data```**
-//6. MAKE SURE TO ADD id="username", id="password", id="error" AND id="submit" TO THE APPROPRIATE DOM ELEMENTS. YOUR AUTOTESTS WILL FAIL WITHOUT THEM.
 
 const ComponentContainer = styled.div`
   height: 70%;
@@ -126,4 +110,8 @@ const Input = styled.input`
 const Button = styled.button`
   padding: 1rem;
   width: 100%;
+`
+
+const Error = styled.p`
+  color: red;
 `

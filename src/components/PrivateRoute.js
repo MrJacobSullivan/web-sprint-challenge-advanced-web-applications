@@ -1,11 +1,20 @@
 import React from 'react'
-import { Route } from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 
-function PrivateRoute() {
-  return <Route />
+import { useAuthContext } from '../hooks/useAuthContext'
+
+const PrivateRoute = ({ component: Component, token, ...rest }) => {
+  const { isLoggedIn } = useAuthContext()
+
+  return (
+    <Route
+      {...rest}
+      render={(props) => {
+        if (isLoggedIn) return <Component {...props} />
+        return <Redirect to="/login" />
+      }}
+    />
+  )
 }
 
 export default PrivateRoute
-
-//Task List:
-//1. Complete PrivateRoute
