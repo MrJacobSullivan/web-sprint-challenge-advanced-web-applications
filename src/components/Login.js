@@ -4,11 +4,19 @@ import styled from 'styled-components'
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 
+import { useRole } from '../hooks/useRole'
+import { useToken } from '../hooks/useToken'
+import { useUsername } from '../hooks/useUsername'
+
 const initialValues = { username: '', password: '' }
 
 const Login = () => {
   const [values, setValue] = useState(initialValues)
   const [error, setError] = useState('')
+
+  const { setRole } = useRole()
+  const { setToken } = useToken()
+  const { setUsername } = useUsername()
 
   const { push } = useHistory()
 
@@ -17,13 +25,31 @@ const Login = () => {
     setValue({ ...values, [name]: value })
   }
 
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError('')
+
+    try {
+      const { data } = await axios.post('http://localhost:5000/api/login', values)
+      const { role, token, username } = data
+
+      setRole(role)
+      setToken(token)
+      setUsername(username)
+
+      push('/')
+    } catch ({ message }) {
+      setError(message)
+    }
+  }
+
   return (
     <ComponentContainer>
       <ModalContainer>
         <h1>Welcome to Blogger Pro</h1>
         <h2>Please enter your account information.</h2>
 
-        <FormGroup>
+        <FormGroup onSubmit={handleSubmit}>
           <Label>
             Username
             <Input
