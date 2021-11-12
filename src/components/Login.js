@@ -1,16 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 
-import { useAppContext } from '../hooks/useAuthContext'
+import { useSelector, useDispatch } from 'react-redux'
+import { login, authSelector, resetState } from '../lib/authSlice'
 
 const initialValues = { username: '', password: '' }
 
 const Login = () => {
+  const dispatch = useDispatch()
+  const { isFetching, isSuccess, isError, error } = useSelector(authSelector)
+
   const [values, setValue] = useState(initialValues)
-  const [error, setError] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
   // const { login } = useAppContext()
 
@@ -21,19 +25,26 @@ const Login = () => {
     setValue({ ...values, [name]: value })
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
-    setError('')
 
-    try {
-      const { data } = await axios.post('http://localhost:5000/api/login', values)
-      // login(data)
-
-      push('/view')
-    } catch ({ message }) {
-      setError(message)
-    }
+    dispatch(login(values))
   }
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetState())
+    }
+  }, [])
+
+  useEffect(() => {
+    if (isError) setErrorMessage(error)
+
+    if (isSuccess) {
+      dispatch(resetState())
+      push('/view')
+    }
+  })
 
   return (
     <ComponentContainer>
@@ -66,7 +77,7 @@ const Login = () => {
             />
           </Label>
 
-          <Error id="error">{error}</Error>
+          <Error id="error">{errorMessage}</Error>
 
           <Button id="submit">Submit</Button>
         </FormGroup>
