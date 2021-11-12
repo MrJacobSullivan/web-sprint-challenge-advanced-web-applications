@@ -16,7 +16,19 @@ const App = () => {
       <Header />
       <RouteContainer>
         <Route exact path="/">
+          <Redirect to="/login" />
+        </Route>
+
+        <Route path="/login">
           <Login />
+        </Route>
+
+        <Route path="/logout">
+          <Logout />
+        </Route>
+
+        <Route path="/view">
+          <View />
         </Route>
       </RouteContainer>
     </AppContainer>

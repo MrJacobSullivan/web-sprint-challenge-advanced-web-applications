@@ -1,12 +1,57 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
+import axios from 'axios'
+import { useHistory } from 'react-router-dom'
+
+const initialValues = { username: '', password: '' }
+
 const Login = () => {
+  const [values, setValue] = useState(initialValues)
+  const [error, setError] = useState('')
+
+  const { push } = useHistory()
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setValue({ ...values, [name]: value })
+  }
+
   return (
     <ComponentContainer>
       <ModalContainer>
         <h1>Welcome to Blogger Pro</h1>
         <h2>Please enter your account information.</h2>
+
+        <FormGroup>
+          <Label>
+            Username
+            <Input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="required"
+              value={values.username}
+              onChange={handleChange}
+            />
+          </Label>
+
+          <Label>
+            Password
+            <Input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="required"
+              value={values.password}
+              onChange={handleChange}
+            />
+          </Label>
+
+          <p>{error}</p>
+
+          <Button id="submit">Submit</Button>
+        </FormGroup>
       </ModalContainer>
     </ComponentContainer>
   )
