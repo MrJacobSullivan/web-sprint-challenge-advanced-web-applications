@@ -1,11 +1,11 @@
-import React from "react";
-import { Route } from "react-router-dom";
+import React from 'react'
+import { Route } from 'react-router-dom'
 
 function PrivateRoute() {
-  return (<Route/>);
+  return <Route />
 }
 
-export default PrivateRoute;
+export default PrivateRoute
 
 //Task List:
 //1. Complete PrivateRoute

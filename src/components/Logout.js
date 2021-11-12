@@ -1,10 +1,10 @@
-import React from 'react';
+import React from 'react'
 
-const Logout = () => {        
-    return(<div></div>);
+const Logout = () => {
+  return <div></div>
 }
 
-export default Logout;
+export default Logout
 
 // Task List
 // 1. On mount, execute a http request to the logout endpoint.
