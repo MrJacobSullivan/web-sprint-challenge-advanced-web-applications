@@ -40,4 +40,6 @@ const articleService = {
   },
 }
 
+export const { getAll } = articleService.getAll
+
 export default articleService
