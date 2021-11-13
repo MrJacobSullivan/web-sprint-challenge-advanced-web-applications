@@ -1,20 +1,23 @@
 import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 
-import { useDispatch } from 'react-redux'
-import { logout } from '../lib/authSlice'
+import axiosWithAuth from '../utils/axiosWithAuth'
 
 const Logout = () => {
-  const dispatch = useDispatch()
-
   const { push } = useHistory()
 
   useEffect(() => {
-    dispatch(logout())
-    push('/login')
+    axiosWithAuth()
+      .post('/logout')
+      .then(() => {
+        localStorage.removeItem('token')
+
+        push('/login')
+      })
+      .catch(({ message }) => console.log(message))
   }, [])
 
-  return null
+  return <div />
 }
 
 export default Logout

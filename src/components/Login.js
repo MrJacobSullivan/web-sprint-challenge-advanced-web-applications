@@ -1,21 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { useHistory } from 'react-router-dom'
+import axios from 'axios'
 
-import { useSelector, useDispatch } from 'react-redux'
-import { login, authSelector, resetState } from '../lib/authSlice'
+import { useHistory } from 'react-router-dom'
 
 const initialValues = { username: '', password: '' }
 
 const Login = () => {
-  const dispatch = useDispatch()
-  const { isSuccess, isError, error } = useSelector(authSelector)
+  const { push } = useHistory()
 
   const [values, setValue] = useState(initialValues)
   const [errorMessage, setErrorMessage] = useState('')
-
-  const { push } = useHistory()
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -25,23 +21,15 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    dispatch(login(values))
+    axios
+      .post('http://localhost:5000/api/login', values)
+      .then(({ data }) => {
+        localStorage.setItem('token', data.token)
+
+        push('/view')
+      })
+      .catch(({ message }) => setErrorMessage(message))
   }
-
-  useEffect(() => {
-    return () => {
-      dispatch(resetState())
-    }
-  }, [])
-
-  useEffect(() => {
-    if (isError) setErrorMessage(error)
-
-    if (isSuccess) {
-      dispatch(resetState())
-      push('/view')
-    }
-  })
 
   return (
     <ComponentContainer>

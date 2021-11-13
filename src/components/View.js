@@ -16,8 +16,10 @@ const View = (props) => {
   const handleDelete = (id) => articleService.delete(id).then(() => getAll())
 
   const handleEdit = (article) => {
-    articleService.update(article).then(() => getAll())
-    setEditing(false)
+    articleService.update(article).then(() => {
+      getAll()
+      setEditing(false)
+    })
   }
 
   const handleEditSelect = (id) => {

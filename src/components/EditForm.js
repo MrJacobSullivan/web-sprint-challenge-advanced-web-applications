@@ -63,10 +63,6 @@ const EditForm = (props) => {
 
 export default EditForm
 
-//Task List:
-// 1. On mount, make a http request to retrieve the article with the id `editId.`
-// 2. Save result of request to local state.
-
 const FormContainer = styled.form`
   padding: 1em;
   width: 400px;
